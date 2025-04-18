@@ -20,6 +20,7 @@ import com.example.tfg.viewModel.TareaViewModel;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 public class CrearTareaActivity extends AppCompatActivity {
@@ -44,13 +45,15 @@ public class CrearTareaActivity extends AppCompatActivity {
         editTextDescripcion = findViewById(R.id.edit_text_descripcion);
         spinnerPrioridad = findViewById(R.id.spinner_prioridad);
         spinnerCategoria = findViewById(R.id.spinner_categoria);
-//        editTextFecha = findViewById(id.btn_seleccionar_fecha);
-//        editTextFecha.setFocusable(false);
-//        editTextFecha.setOnClickListener(v -> mostrarSelectorFechaHora());
+       editTextFecha = findViewById(id.edit_text_fecha);
+
 
         tareaViewModel = new ViewModelProvider(this).get(TareaViewModel.class);
 
         setupSpinners();
+
+        editTextFecha.setFocusable(false);
+        editTextFecha.setOnClickListener(v -> mostrarSelectorFechaHora());
 
         if (getIntent().hasExtra(EXTRA_ID)) {
             setTitle("Editar Tarea");
@@ -66,6 +69,11 @@ public class CrearTareaActivity extends AppCompatActivity {
 
                     int categoriaPosition = ((ArrayAdapter)spinnerCategoria.getAdapter()).getPosition(tarea.getCategoria());
                     spinnerCategoria.setSelection(categoriaPosition);
+
+                    if (tarea.getFecha() != null) {
+                        editTextFecha.setText(new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
+                                .format(tarea.getFecha()));
+                    }
                 }
             });
         } else {
@@ -84,41 +92,39 @@ public class CrearTareaActivity extends AppCompatActivity {
         categoriaAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerCategoria.setAdapter(categoriaAdapter);
     }
+    private void mostrarSelectorFechaHora() {
+        final Calendar calendario = Calendar.getInstance();
 
-//    private void mostrarSelectorFechaHora() {
-//        final Calendar calendario = Calendar.getInstance();
-//
-//        // Selector de fecha
-//        DatePickerDialog datePicker = new DatePickerDialog(this,
-//                (view, year, month, day) -> {
-//                    calendario.set(year, month, day);
-//                    mostrarSelectorHora(calendario);
-//                },
-//                calendario.get(Calendar.YEAR),
-//                calendario.get(Calendar.MONTH),
-//                calendario.get(Calendar.DAY_OF_MONTH)
-//        );
-//
-//        datePicker.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
-//        datePicker.show();
-//    }
-//
-//    private void mostrarSelectorHora(Calendar calendario) {
-//        TimePickerDialog timePicker = new TimePickerDialog(this,
-//                (view, hour, minute) -> {
-//                    calendario.set(Calendar.HOUR_OF_DAY, hour);
-//                    calendario.set(Calendar.MINUTE, minute);
-//
-//                    fechaSeleccionada = calendario.getTimeInMillis();
-//                    editTextFecha.setText(new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
-//                            .format(calendario.getTime()));
-//                },
-//                calendario.get(Calendar.HOUR_OF_DAY),
-//                calendario.get(Calendar.MINUTE),
-//                true
-//        );
-//        timePicker.show();
-//    }
+        // Selector de fecha
+        DatePickerDialog datePicker = new DatePickerDialog(this,
+                (view, year, month, day) -> {
+                    calendario.set(year, month, day);
+                    mostrarSelectorHora(calendario);
+                },
+                calendario.get(Calendar.YEAR),
+                calendario.get(Calendar.MONTH),
+                calendario.get(Calendar.DAY_OF_MONTH)
+        );
+        datePicker.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+        datePicker.show();
+    }
+
+    private void mostrarSelectorHora(Calendar calendario) {
+        TimePickerDialog timePicker = new TimePickerDialog(this,
+                (view, hour, minute) -> {
+                    calendario.set(Calendar.HOUR_OF_DAY, hour);
+                    calendario.set(Calendar.MINUTE, minute);
+
+                    fechaSeleccionada = calendario.getTimeInMillis();
+                    editTextFecha.setText(new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
+                            .format(calendario.getTime()));
+                },
+                calendario.get(Calendar.HOUR_OF_DAY),
+                calendario.get(Calendar.MINUTE),
+                true
+        );
+        timePicker.show();
+    }
 
     public void guardarTarea(View view) {
         String titulo = editTextTitulo.getText().toString().trim();
@@ -132,8 +138,8 @@ public class CrearTareaActivity extends AppCompatActivity {
             return;
         }
 
-        Tarea tarea = new Tarea(titulo, descripcion, categoria, prioridad);
-
+        Date fechaFinal = new Date(fechaSeleccionada); // ← convierte el Long en Date
+        Tarea tarea = new Tarea(titulo, descripcion, categoria, prioridad, fechaFinal);
         if (tareaId != -1) {
             tarea.setId(tareaId);
             tareaViewModel.update(tarea);

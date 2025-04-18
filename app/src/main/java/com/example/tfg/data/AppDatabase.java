@@ -4,11 +4,16 @@ import android.content.Context;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
+import androidx.room.TypeConverters;
+
+import com.example.tfg.util.Converters;
 
 import java.util.concurrent.Executor;
 
 
-@Database(entities = {com.example.tfg.model.Tarea.class}, version = 2)
+@Database(entities = {com.example.tfg.model.Tarea.class}, version = 3)// Lo he cambiado a 3 estaba en 2 lo he vuelto a cambiar a 2
+@TypeConverters({Converters.class})
+
 public abstract class AppDatabase extends RoomDatabase {
 
     public abstract TareaDao tareaDao();

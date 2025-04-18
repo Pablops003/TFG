@@ -43,6 +43,15 @@
             android:paddingVertical="4dp"
             android:textColor="@android:color/white" />
 
+        <TextView
+            android:id="@+id/textViewFechaFin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textViewPrioridad"
+            android:text="Fecha Fin"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="@color/text_secondary" />
+
         <ImageButton
             android:id="@+id/btnDelete"
             android:layout_width="wrap_content"

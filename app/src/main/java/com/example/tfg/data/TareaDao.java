@@ -27,6 +27,5 @@ public interface TareaDao {
     @Query("SELECT * FROM tareas WHERE id = :id")
     LiveData<Tarea> getTareaById(int id);
 
-    @Query("SELECT * FROM tareas")
-    List<Tarea> getAllTareasSync();
+
 }

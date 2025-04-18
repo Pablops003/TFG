@@ -19,6 +19,7 @@ public class TareaViewModel extends AndroidViewModel {
     private LiveData<List<Tarea>> allTareas;
     private TareaDao tareaDao;
     private AppDatabase AppDatabase;
+
     public TareaViewModel(Application application) {
         super(application);
         repository = new TareaRepository(application);

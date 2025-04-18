@@ -13,7 +13,9 @@ import com.example.tfg.model.Tarea;
 import com.example.tfg.R;
 import com.example.tfg.util.PriorityColorUtil;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 public class TareaAdapter extends RecyclerView.Adapter<TareaAdapter.TareaViewHolder> {
     private List<Tarea> tareas;
@@ -31,6 +33,7 @@ public class TareaAdapter extends RecyclerView.Adapter<TareaAdapter.TareaViewHol
     @NonNull
     @Override
     public TareaViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_tarea, parent, false);
         return new TareaViewHolder(itemView);
@@ -43,10 +46,20 @@ public class TareaAdapter extends RecyclerView.Adapter<TareaAdapter.TareaViewHol
         holder.textViewDescripcion.setText(currentTarea.getDescripcion());
         holder.textViewPrioridad.setText(currentTarea.getPrioridad());
 
+
         // Cambiar color según prioridad
         int prioridadColor = PriorityColorUtil.getPriorityColor(currentTarea.getPrioridad(), holder.itemView.getContext());
         GradientDrawable prioridadfondo = (GradientDrawable) holder.textViewPrioridad.getBackground();
         prioridadfondo.setColor(prioridadColor);
+
+
+        // Configurar la fecha de finalización (formateada)
+        if (currentTarea.getFecha() != null) {
+            String fechaFinFormateada = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(currentTarea.getFecha());
+            holder.textViewFechaFin.setText(fechaFinFormateada);
+        } else {
+            holder.textViewFechaFin.setText("Sin fecha");
+        }
     }
 
     @Override
@@ -58,7 +71,7 @@ public class TareaAdapter extends RecyclerView.Adapter<TareaAdapter.TareaViewHol
     }
 
     class TareaViewHolder extends RecyclerView.ViewHolder {
-        private TextView textViewTitulo, textViewDescripcion, textViewPrioridad;
+        private TextView textViewTitulo, textViewDescripcion, textViewPrioridad, textViewFechaFin;
         private ImageButton btnDelete;
         private CardView cardView;
 
@@ -67,6 +80,7 @@ public class TareaAdapter extends RecyclerView.Adapter<TareaAdapter.TareaViewHol
             textViewTitulo = itemView.findViewById(R.id.textViewTitulo);
             textViewDescripcion = itemView.findViewById(R.id.textViewDescripcion);
             textViewPrioridad = itemView.findViewById(R.id.textViewPrioridad);
+            textViewFechaFin = itemView.findViewById(R.id.textViewFechaFin);
             btnDelete = itemView.findViewById(R.id.btnDelete);
             cardView = itemView.findViewById(R.id.cardView);
 

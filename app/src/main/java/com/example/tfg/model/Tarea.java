@@ -4,6 +4,8 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.util.Date;
+
 @Entity(tableName = "tareas")
 public class Tarea {
     @PrimaryKey(autoGenerate = true)
@@ -13,19 +15,17 @@ public class Tarea {
     private String categoria;
     private String prioridad; // "Alta", "Media", "Baja"
     private boolean completada;
-//    @ColumnInfo(name = "fecha_vencimiento")
-//    private Long fechaVencimiento; // Almacenamos timestamp en milisegundos
-//
-//    @ColumnInfo(name = "notificada")
-//    private boolean notificada = false;
+    @ColumnInfo(name = "fecha")
+    private Date fecha;
 
-    public Tarea(String titulo, String descripcion, String categoria, String prioridad) {
+
+    public Tarea(String titulo, String descripcion, String categoria, String prioridad, Date fecha) {
         this.titulo = titulo;
         this.descripcion = descripcion;
         this.categoria = categoria;
         this.prioridad = prioridad;
         this.completada = false;
-      //  this.fechaVencimiento = fechaVencimiento;
+        this.fecha=fecha;
 
     }
 
@@ -42,8 +42,6 @@ public class Tarea {
     public void setPrioridad(String prioridad) { this.prioridad = prioridad; }
     public boolean isCompletada() { return completada; }
     public void setCompletada(boolean completada) { this.completada = completada; }
-//    public Long getFechaVencimiento() { return fechaVencimiento; }
-//    public void setFechaVencimiento(Long fechaVencimiento) { this.fechaVencimiento = fechaVencimiento; }
-//    public boolean isNotificada() { return notificada; }
-//    public void setNotificada(boolean notificada) { this.notificada = notificada; }
+    public Date getFecha() { return fecha; }
+    public void setFecha(Date fecha) { this.fecha = fecha; }
 }

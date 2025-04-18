@@ -8,4 +8,7 @@
     <string name="prioridad">Prioridad</string>
     <string name="guardar">GUARDAR</string>
     <string name="eliminar">Eliminar</string>
+    <string name="seleccionar_fecha">Seleccionar fecha</string>
+    <string name="fecha">Seleccionar fecha</string>
+
 </resources>

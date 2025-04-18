@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 
 import androidx.lifecycle.LiveData;
+import androidx.room.Room;
 
 import com.example.tfg.model.Tarea;
 import com.example.tfg.receiver.AlarmaManager;
@@ -23,6 +24,17 @@ public class TareaRepository {
         allTareas = tareaDao.getAllTareas();
         executorService = Executors.newSingleThreadExecutor();
     }
+
+//    public TareaRepository(Context context) {
+//        AppDatabase db = Room.databaseBuilder(context.getApplicationContext(),
+//                        AppDatabase.class, "tareas.db")
+//                .fallbackToDestructiveMigration()
+//                .build();
+//        tareaDao = db.tareaDao();
+//        allTareas = tareaDao.getAllTareas();
+//        executorService = Executors.newSingleThreadExecutor();
+//
+//    }
 
     public LiveData<List<Tarea>> getAllTareas() {
         return allTareas;
@@ -44,7 +56,5 @@ public class TareaRepository {
         executorService.execute(() -> tareaDao.delete(tarea));
     }
 
-    public List<Tarea> getAllTareasSync() {
-        return tareaDao.getAllTareasSync();
-    }
+
 }
