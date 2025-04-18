@@ -9,7 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
-import com.example.patareas.model.Tarea;
+import com.example.tfg.model.Tarea;
 import com.example.tfg.R;
 import com.example.tfg.util.PriorityColorUtil;
 

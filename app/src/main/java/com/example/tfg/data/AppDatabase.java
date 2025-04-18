@@ -8,9 +8,8 @@ import androidx.room.RoomDatabase;
 import java.util.concurrent.Executor;
 
 
-@Database(entities = {com.example.patareas.model.Tarea.class}, version = 2)
+@Database(entities = {com.example.tfg.model.Tarea.class}, version = 2)
 public abstract class AppDatabase extends RoomDatabase {
-    public Executor databaseWriteExecutor;
 
     public abstract TareaDao tareaDao();
 
@@ -30,3 +29,5 @@ public abstract class AppDatabase extends RoomDatabase {
         return INSTANCE;
     }
 }
+
+

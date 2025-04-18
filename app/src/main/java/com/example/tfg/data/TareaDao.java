@@ -6,13 +6,14 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
-import com.example.patareas.model.Tarea;
+import com.example.tfg.model.Tarea;
+
 import java.util.List;
 
 @Dao
 public interface TareaDao {
     @Insert
-    void insert(Tarea tarea);
+    long insert(Tarea tarea);
 
     @Update
     void update(Tarea tarea);

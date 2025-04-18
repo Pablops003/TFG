@@ -89,6 +89,7 @@
             android:background="@drawable/bg_spinner"
             android:spinnerMode="dropdown" />
 
+
         <Button
             android:id="@+id/button_guardar"
             android:layout_width="match_parent"

@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.example.patareas.model.Tarea;
+import com.example.tfg.model.Tarea;
 import com.example.tfg.R;
 import com.example.tfg.adapter.TareaAdapter;
 import com.example.tfg.view.CrearTareaActivity;

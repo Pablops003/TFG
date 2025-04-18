@@ -1,10 +1,12 @@
 package com.example.tfg.data;
 
 import android.app.Application;
+import android.content.Context;
+
 import androidx.lifecycle.LiveData;
-import com.example.patareas.model.Tarea;
-import com.example.tfg.data.AppDatabase;
-import com.example.tfg.data.TareaDao;
+
+import com.example.tfg.model.Tarea;
+import com.example.tfg.receiver.AlarmaManager;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -22,8 +24,13 @@ public class TareaRepository {
         executorService = Executors.newSingleThreadExecutor();
     }
 
-    public LiveData<List<Tarea>> getAllTareas() { return allTareas; }
-    public LiveData<Tarea> getTareaById(int id) { return tareaDao.getTareaById(id); }
+    public LiveData<List<Tarea>> getAllTareas() {
+        return allTareas;
+    }
+
+    public LiveData<Tarea> getTareaById(int id) {
+        return tareaDao.getTareaById(id);
+    }
 
     public void insert(Tarea tarea) {
         executorService.execute(() -> tareaDao.insert(tarea));

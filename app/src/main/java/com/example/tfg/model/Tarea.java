@@ -1,5 +1,6 @@
-package com.example.patareas.model;
+package com.example.tfg.model;
 
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -12,6 +13,11 @@ public class Tarea {
     private String categoria;
     private String prioridad; // "Alta", "Media", "Baja"
     private boolean completada;
+//    @ColumnInfo(name = "fecha_vencimiento")
+//    private Long fechaVencimiento; // Almacenamos timestamp en milisegundos
+//
+//    @ColumnInfo(name = "notificada")
+//    private boolean notificada = false;
 
     public Tarea(String titulo, String descripcion, String categoria, String prioridad) {
         this.titulo = titulo;
@@ -19,6 +25,8 @@ public class Tarea {
         this.categoria = categoria;
         this.prioridad = prioridad;
         this.completada = false;
+      //  this.fechaVencimiento = fechaVencimiento;
+
     }
 
     // Getters y Setters
@@ -34,4 +42,8 @@ public class Tarea {
     public void setPrioridad(String prioridad) { this.prioridad = prioridad; }
     public boolean isCompletada() { return completada; }
     public void setCompletada(boolean completada) { this.completada = completada; }
+//    public Long getFechaVencimiento() { return fechaVencimiento; }
+//    public void setFechaVencimiento(Long fechaVencimiento) { this.fechaVencimiento = fechaVencimiento; }
+//    public boolean isNotificada() { return notificada; }
+//    public void setNotificada(boolean notificada) { this.notificada = notificada; }
 }
