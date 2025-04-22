@@ -22,6 +22,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import com.example.tfg.util.AlarmaManager;
+import com.example.tfg.util.NotificacionHelper;
 
 public class CrearTareaActivity extends AppCompatActivity {
     public static final String EXTRA_ID = "com.example.patareas.EXTRA_ID";
@@ -140,13 +142,24 @@ public class CrearTareaActivity extends AppCompatActivity {
 
         Date fechaFinal = new Date(fechaSeleccionada); // ← convierte el Long en Date
         Tarea tarea = new Tarea(titulo, descripcion, categoria, prioridad, fechaFinal);
+        NotificacionHelper.crearCanal(this);
+        AlarmaManager.programarAlarma(this, tarea);
+
         if (tareaId != -1) {
             tarea.setId(tareaId);
             tareaViewModel.update(tarea);
             Toast.makeText(this, "Tarea actualizada", Toast.LENGTH_SHORT).show();
         } else {
             tareaViewModel.insert(tarea);
-            Toast.makeText(this, "Tarea creada", Toast.LENGTH_SHORT).show();
+
+            //Toast.makeText(this, "Tarea creada", Toast.LENGTH_SHORT).show();
+
+            // Mostrar fecha de creación con Toast
+            Date fechaCreacion = new Date();
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
+            String fechaFormateada = sdf.format(fechaCreacion);
+
+            Toast.makeText(this, "Tarea creada el " + fechaFormateada, Toast.LENGTH_LONG).show();
         }
 
         finish();

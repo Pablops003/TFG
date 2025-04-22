@@ -17,8 +17,7 @@ import java.util.Map;
 public class TareaViewModel extends AndroidViewModel {
     private TareaRepository repository;
     private LiveData<List<Tarea>> allTareas;
-    private TareaDao tareaDao;
-    private AppDatabase AppDatabase;
+
 
     public TareaViewModel(Application application) {
         super(application);

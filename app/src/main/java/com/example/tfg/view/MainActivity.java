@@ -6,10 +6,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.example.tfg.model.Tarea;
 import com.example.tfg.R;
 import com.example.tfg.adapter.TareaAdapter;
+import com.example.tfg.util.AlarmaManager;
 import com.example.tfg.view.CrearTareaActivity;
 import com.example.tfg.viewModel.TareaViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -48,6 +50,12 @@ public class MainActivity extends AppCompatActivity {
                         .setMessage("¿seguro que quieres eliminar esta tarea?")
                         .setPositiveButton("Sí", (dialogo, si) -> {
                             tareaViewModel.delete(tarea);
+
+                            // Cancelar la alarma asociada a la tarea eliminada
+                            AlarmaManager.cancelarAlarma(MainActivity.this, tarea);
+
+                            // Mostrar un mensaje de confirmación
+                            Toast.makeText(MainActivity.this, "Tarea eliminada y alarma cancelada", Toast.LENGTH_SHORT).show();
                         })
                         .setNegativeButton("Cancelar", null)
                         .show();

@@ -7,7 +7,6 @@ import androidx.lifecycle.LiveData;
 import androidx.room.Room;
 
 import com.example.tfg.model.Tarea;
-import com.example.tfg.receiver.AlarmaManager;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -24,7 +23,7 @@ public class TareaRepository {
         allTareas = tareaDao.getAllTareas();
         executorService = Executors.newSingleThreadExecutor();
     }
-
+//
 //    public TareaRepository(Context context) {
 //        AppDatabase db = Room.databaseBuilder(context.getApplicationContext(),
 //                        AppDatabase.class, "tareas.db")
