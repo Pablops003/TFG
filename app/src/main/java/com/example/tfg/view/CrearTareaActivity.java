@@ -1,9 +1,6 @@
 package com.example.tfg.view;
 
-import static com.example.tfg.R.*;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProvider;
+import static com.example.tfg.R.id;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -14,16 +11,20 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
-import com.example.tfg.model.Tarea;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
+
 import com.example.tfg.R;
+import com.example.tfg.model.Tarea;
+import com.example.tfg.util.AlarmaManager;
+import com.example.tfg.util.NotificacionHelper;
 import com.example.tfg.viewModel.TareaViewModel;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-import com.example.tfg.util.AlarmaManager;
-import com.example.tfg.util.NotificacionHelper;
 
 public class CrearTareaActivity extends AppCompatActivity {
     public static final String EXTRA_ID = "com.example.patareas.EXTRA_ID";
@@ -152,6 +153,9 @@ public class CrearTareaActivity extends AppCompatActivity {
         } else {
             tareaViewModel.insert(tarea);
 
+            if (tarea.isCompletada()) {
+                Toast.makeText(this, "¡Tarea completada!", Toast.LENGTH_SHORT).show();
+            }
             //Toast.makeText(this, "Tarea creada", Toast.LENGTH_SHORT).show();
 
             // Mostrar fecha de creación con Toast

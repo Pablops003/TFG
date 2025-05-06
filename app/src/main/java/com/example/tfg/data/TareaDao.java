@@ -21,11 +21,16 @@ public interface TareaDao {
     @Delete
     void delete(Tarea tarea);
 
-    @Query("SELECT * FROM tareas ORDER BY CASE prioridad WHEN 'Alta' THEN 1 WHEN 'Media' THEN 2 ELSE 3 END")
-    LiveData<List<Tarea>> getAllTareas();
+    @Query("SELECT * FROM tareas WHERE completada = false ORDER BY CASE prioridad WHEN 'Alta' THEN 1 WHEN 'Media' THEN 2 ELSE 3 END")
+    LiveData<List<Tarea>> getTareasPendientes();
 
     @Query("SELECT * FROM tareas WHERE id = :id")
     LiveData<Tarea> getTareaById(int id);
 
+    @Query("SELECT * FROM tareas WHERE completada = 1 ORDER BY fecha DESC")
+    LiveData<List<Tarea>> getTareasCompletadas();
 
+
+    @Query("SELECT * FROM tareas ORDER BY CASE prioridad WHEN 'Alta' THEN 1 WHEN 'Media' THEN 2 ELSE 3 END")
+    LiveData<List<Tarea>> getAllTareas();
 }

@@ -28,7 +28,6 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/textViewTitulo"
             android:layout_marginTop="4dp"
-            android:layout_toStartOf="@id/btnDelete"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textColor="@color/text_secondary" />
 
@@ -48,20 +47,38 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/textViewPrioridad"
+            android:layout_marginTop="4dp"
             android:text="Fecha Fin"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textColor="@color/text_secondary" />
 
-        <ImageButton
-            android:id="@+id/btnDelete"
+        <!-- Botones colocados correctamente -->
+        <LinearLayout
+            android:id="@+id/buttonContainer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@id/textViewFechaFin"
             android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="@string/eliminar"
-            android:src="@drawable/ic_delete"
-            app:tint="@color/colorAccent" />
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/btnDelete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_delete"
+                android:contentDescription="Eliminar tarea"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:layout_marginEnd="8dp" />
+
+            <ImageButton
+                android:id="@+id/btnCompletar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_check"
+                android:contentDescription="Completar tarea"
+                android:background="?android:attr/selectableItemBackgroundBorderless" />
+        </LinearLayout>
 
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

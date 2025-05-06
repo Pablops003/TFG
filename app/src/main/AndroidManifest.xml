@@ -31,15 +31,20 @@
 
         <!-- para las estadisticas -->
         <activity
-            android:name=".view.StatsActivity"
+            android:name="com.example.tfg.view.StatsActivity"
             android:label="Estadísticas"
-            android:parentActivityName=".view.MainActivity" />
+            android:parentActivityName="com.example.tfg.view.MainActivity" />
         <!-- Actividad para Crear/Editar Tareas -->
         <activity
             android:name="com.example.tfg.view.CrearTareaActivity"
             android:label="@string/nueva_tarea"
             android:theme="@style/Theme.AppCompat.Light.DialogWhenLarge"
             android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".view.TareasCompletasActivity"
+            android:label="Tareas Completadas"
+            android:parentActivityName=".view.MainActivity"/>
 
     </application>
 </manifest>

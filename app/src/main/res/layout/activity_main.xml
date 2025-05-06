@@ -17,6 +17,7 @@
         android:padding="8dp"
         android:paddingBottom="72dp" />
 
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
@@ -30,5 +31,28 @@
         app:elevation="8dp"
         app:tint="@android:color/white" />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabStats"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="80dp"
+    android:contentDescription="Ver estadísticas"
+    android:src="@drawable/ic_stats"
+    app:backgroundTint="@color/colorAccent"
+    app:tint="@android:color/white" />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabCompletadas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="144dp"
+        android:src="@drawable/ic_check"
+        android:contentDescription="Tareas completadas"
+        app:tint="@android:color/white"/>
 </RelativeLayout>

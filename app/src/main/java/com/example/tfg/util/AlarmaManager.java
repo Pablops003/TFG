@@ -28,7 +28,7 @@ public class AlarmaManager {
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(
                 context,
-                tarea.getId(), // Usa el ID como requestCode único
+                tarea.getId(), // Usa el ID como requestCode unico
                 intent,
                 PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
         );
@@ -51,14 +51,14 @@ public class AlarmaManager {
         }
     }
 
-    // Reutilizar la creación de PendingIntent
+    // Reutilizar PendingIntent
     private static PendingIntent crearPendingIntent(Context context, Tarea tarea) {
         Intent intent = new Intent(context, AlarmReceiver.class);
         intent.putExtra("titulo", tarea.getTitulo());
 
         return PendingIntent.getBroadcast(
                 context,
-                tarea.getId(), // requestCode único para cada tarea
+                tarea.getId(), // unico para cada tarea
                 intent,
                 PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
         );

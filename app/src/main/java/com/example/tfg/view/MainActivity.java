@@ -1,18 +1,19 @@
 package com.example.tfg.view;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
-import com.example.tfg.model.Tarea;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.tfg.R;
 import com.example.tfg.adapter.TareaAdapter;
+import com.example.tfg.model.Tarea;
 import com.example.tfg.util.AlarmaManager;
-import com.example.tfg.view.CrearTareaActivity;
 import com.example.tfg.viewModel.TareaViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -24,15 +25,29 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Aqui van los botones para las estadicticas, para cxrear las tareas y las tareass completadas
         FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(view -> {
+        fab.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, CrearTareaActivity.class);
+            startActivity(intent);
+        });
+
+        FloatingActionButton fabStats = findViewById(R.id.fabStats);
+        fabStats.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, StatsActivity.class);
+            startActivity(intent);
+        });
+
+        FloatingActionButton fabCompletada = findViewById(R.id.fabCompletadas);
+        fabCompletada.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, TareasCompletasActivity.class);
             startActivity(intent);
         });
 
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
+        tareaViewModel = new ViewModelProvider(this).get(TareaViewModel.class);
 
         TareaAdapter adapter = new TareaAdapter(new TareaAdapter.OnItemClickListener() {
             @Override
@@ -44,29 +59,25 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onDeleteClick(Tarea tarea) {
-                 // tareaViewModel.delete(tarea);
-                new androidx.appcompat.app.AlertDialog.Builder(MainActivity.this)
+                new AlertDialog.Builder(MainActivity.this)
                         .setTitle("Eliminar tarea")
                         .setMessage("¿seguro que quieres eliminar esta tarea?")
                         .setPositiveButton("Sí", (dialogo, si) -> {
                             tareaViewModel.delete(tarea);
-
-                            // Cancelar la alarma asociada a la tarea eliminada
                             AlarmaManager.cancelarAlarma(MainActivity.this, tarea);
-
-                            // Mostrar un mensaje de confirmación
                             Toast.makeText(MainActivity.this, "Tarea eliminada y alarma cancelada", Toast.LENGTH_SHORT).show();
                         })
                         .setNegativeButton("Cancelar", null)
                         .show();
             }
-        });
+        }, tareaViewModel);
 
 
         recyclerView.setAdapter(adapter);
 
         tareaViewModel = new ViewModelProvider(this).get(TareaViewModel.class);
-        tareaViewModel.getAllTareas().observe(this, adapter::setTareas);
+      //  tareaViewModel.getAllTareas().observe(this, adapter::setTareas);
+        tareaViewModel.getTareasPendientes().observe(this, adapter::setTareas);
 
 
     }

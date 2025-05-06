@@ -1,10 +1,8 @@
 package com.example.tfg.data;
 
 import android.app.Application;
-import android.content.Context;
 
 import androidx.lifecycle.LiveData;
-import androidx.room.Room;
 
 import com.example.tfg.model.Tarea;
 
@@ -14,13 +12,11 @@ import java.util.concurrent.Executors;
 
 public class TareaRepository {
     private TareaDao tareaDao;
-    private LiveData<List<Tarea>> allTareas;
     private ExecutorService executorService;
 
     public TareaRepository(Application application) {
         AppDatabase db = AppDatabase.getDatabase(application);
         tareaDao = db.tareaDao();
-        allTareas = tareaDao.getAllTareas();
         executorService = Executors.newSingleThreadExecutor();
     }
 //
@@ -35,9 +31,18 @@ public class TareaRepository {
 //
 //    }
 
-    public LiveData<List<Tarea>> getAllTareas() {
-        return allTareas;
+   public LiveData<List<Tarea>> getAllTareas() {
+    return tareaDao.getAllTareas();
+   }
+
+    public LiveData<List<Tarea>> getTareasPendientes() {
+        return tareaDao.getTareasPendientes();
     }
+
+    public LiveData<List<Tarea>> getTareasCompletadas() {
+        return tareaDao.getTareasCompletadas();
+    }
+
 
     public LiveData<Tarea> getTareaById(int id) {
         return tareaDao.getTareaById(id);
