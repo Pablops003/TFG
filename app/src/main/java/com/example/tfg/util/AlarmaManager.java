@@ -25,6 +25,7 @@ public class AlarmaManager {
 
         Intent intent = new Intent(context, AlarmReceiver.class);
         intent.putExtra("titulo", tarea.getTitulo());
+        intent.putExtra("descripcion", tarea.getDescripcion());
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(
                 context,
@@ -55,6 +56,7 @@ public class AlarmaManager {
     private static PendingIntent crearPendingIntent(Context context, Tarea tarea) {
         Intent intent = new Intent(context, AlarmReceiver.class);
         intent.putExtra("titulo", tarea.getTitulo());
+        intent.putExtra("descripcion", tarea.getDescripcion());
 
         return PendingIntent.getBroadcast(
                 context,

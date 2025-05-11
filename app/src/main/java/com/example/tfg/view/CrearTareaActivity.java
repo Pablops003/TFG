@@ -141,6 +141,18 @@ public class CrearTareaActivity extends AppCompatActivity {
             return;
         }
 
+        if(TextUtils.isEmpty(descripcion)){
+            editTextDescripcion.setError("La descripción es obligatoria");
+            editTextDescripcion.requestFocus();
+            return;
+        }
+
+        if (fechaSeleccionada == null){
+            editTextFecha.setError("La fecha es obligatoria");
+            editTextFecha.requestFocus();
+            return;
+        }
+
         Date fechaFinal = new Date(fechaSeleccionada); // ← convierte el Long en Date
         Tarea tarea = new Tarea(titulo, descripcion, categoria, prioridad, fechaFinal);
         NotificacionHelper.crearCanal(this);

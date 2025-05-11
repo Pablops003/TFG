@@ -1,6 +1,8 @@
 package com.example.tfg.view;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -14,6 +16,7 @@ import com.example.tfg.R;
 import com.example.tfg.adapter.TareaAdapter;
 import com.example.tfg.model.Tarea;
 import com.example.tfg.util.AlarmaManager;
+import com.example.tfg.util.NotificacionHelper;
 import com.example.tfg.viewModel.TareaViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -25,6 +28,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        NotificacionHelper.mostrar(this, "Tarea de prueba", "Esta es una prueba de notificación.");
+
+        NotificacionHelper.crearCanal(this);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
+            if (checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{android.Manifest.permission.POST_NOTIFICATIONS}, 1);
+            }
+        }
         // Aqui van los botones para las estadicticas, para cxrear las tareas y las tareass completadas
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(v -> {
@@ -80,5 +91,17 @@ public class MainActivity extends AppCompatActivity {
         tareaViewModel.getTareasPendientes().observe(this, adapter::setTareas);
 
 
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 1) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "Permiso de notificaciones concedido", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "Permiso de notificaciones denegado", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 }

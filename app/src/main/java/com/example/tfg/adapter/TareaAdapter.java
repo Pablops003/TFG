@@ -133,6 +133,9 @@ public class TareaAdapter extends RecyclerView.Adapter<TareaAdapter.TareaViewHol
                     listener.onDeleteClick(tareas.get(position));
                 }
             });
+
+
         }
+
     }
 }

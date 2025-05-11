@@ -4,10 +4,11 @@
     package="com.example.tfg"
     tools:ignore="ExtraText">
 
-    <!-- Permiso para notificaciones (aunque no lo estemos usando aún) -->
+    <!-- Permiso para notificaciones -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
+
     <application
         android:name="com.example.tfg.PatareasApp"
 
@@ -45,6 +46,9 @@
             android:name=".view.TareasCompletasActivity"
             android:label="Tareas Completadas"
             android:parentActivityName=".view.MainActivity"/>
+
+
+        <receiver android:name=".receiver.AlarmReceiver" android:enabled="true" android:exported="false" />
 
     </application>
 </manifest>
