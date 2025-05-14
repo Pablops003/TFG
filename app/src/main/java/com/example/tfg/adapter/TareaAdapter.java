@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tfg.R;
@@ -19,6 +20,7 @@ import com.example.tfg.util.PriorityColorUtil;
 import com.example.tfg.viewModel.TareaViewModel;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -74,8 +76,13 @@ public class TareaAdapter extends RecyclerView.Adapter<TareaAdapter.TareaViewHol
         if (currentTarea.getFecha() != null) {
             String fechaFinFormateada = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(currentTarea.getFecha());
             holder.textViewFechaFin.setText(fechaFinFormateada);
-        } else {
-            holder.textViewFechaFin.setText("Sin fecha");
+
+
+            if (holder.estaVencida(currentTarea)) {
+                holder.textViewFechaFin.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.priority_high));
+            } else {
+                holder.textViewFechaFin.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.text_primary));
+            }
         }
 
         holder.btnCompletar.setOnClickListener(v ->{
@@ -91,6 +98,7 @@ public class TareaAdapter extends RecyclerView.Adapter<TareaAdapter.TareaViewHol
             holder.btnCompletar.setVisibility(View.GONE);
             AlarmaManager.cancelarAlarma(v.getContext(), currentTarea);
             Toast.makeText(v.getContext(), "¡Tarea marcada como completada!", Toast.LENGTH_SHORT).show();
+            notifyItemChanged(position);
 
     });
 
@@ -136,6 +144,11 @@ public class TareaAdapter extends RecyclerView.Adapter<TareaAdapter.TareaViewHol
 
 
         }
-
+        private boolean estaVencida(Tarea tarea) {
+            if (tarea.isCompletada() || tarea.getFecha() == null) {
+                return false;
+            }
+            return tarea.getFecha().before(new Date()); // Compara con la fecha actual
+        }
     }
 }
