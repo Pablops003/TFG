@@ -13,7 +13,7 @@ import java.util.Calendar;
 public class AlarmaManager {
 
     public static void programarAlarma(Context context, Tarea tarea) {
-        if (tarea.getFecha() == null) return;
+        if (tarea == null || tarea.getFecha() == null || tarea.getId() == null) return;
 
         // Restar 1 hora a la fecha de fin
         Calendar calendar = Calendar.getInstance();
@@ -29,7 +29,7 @@ public class AlarmaManager {
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(
                 context,
-                tarea.getId(), // Usa el ID como requestCode unico
+                tarea.getId().hashCode(), // Usa el ID como requestCode único
                 intent,
                 PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
         );
@@ -42,9 +42,11 @@ public class AlarmaManager {
                     pendingIntent
             );
         }
-
     }
+
     public static void cancelarAlarma(Context context, Tarea tarea) {
+        if (tarea == null || tarea.getId() == null) return;
+
         PendingIntent pendingIntent = crearPendingIntent(context, tarea);
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         if (alarmManager != null) {
@@ -60,7 +62,7 @@ public class AlarmaManager {
 
         return PendingIntent.getBroadcast(
                 context,
-                tarea.getId(), // unico para cada tarea
+                tarea.getId().hashCode(), // único para cada tarea
                 intent,
                 PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
         );

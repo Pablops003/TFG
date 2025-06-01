@@ -1,7 +1,5 @@
 package com.example.tfg.view;
 
-import static com.example.tfg.R.id;
-
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
@@ -18,26 +16,31 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.tfg.R;
 import com.example.tfg.model.Tarea;
 import com.example.tfg.util.AlarmaManager;
-import com.example.tfg.util.NotificacionHelper;
 import com.example.tfg.viewModel.TareaViewModel;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.UUID;
 
 public class CrearTareaActivity extends AppCompatActivity {
-    public static final String EXTRA_ID = "com.example.patareas.EXTRA_ID";
+    public static final String EXTRA_ID = "com.example.tfg.EXTRA_ID";
 
     private EditText editTextTitulo;
     private EditText editTextDescripcion;
     private Spinner spinnerPrioridad;
     private Spinner spinnerCategoria;
-    private TareaViewModel tareaViewModel;
-    private int tareaId = -1;
     private EditText editTextFecha;
     private Long fechaSeleccionada;
 
+    private UUID usuarioId;
+    private String username;
+    private String password;
+
+    private Tarea tareaEditando = null;
+
+    private TareaViewModel tareaViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,8 +51,7 @@ public class CrearTareaActivity extends AppCompatActivity {
         editTextDescripcion = findViewById(R.id.edit_text_descripcion);
         spinnerPrioridad = findViewById(R.id.spinner_prioridad);
         spinnerCategoria = findViewById(R.id.spinner_categoria);
-       editTextFecha = findViewById(id.edit_text_fecha);
-
+        editTextFecha = findViewById(R.id.edit_text_fecha);
 
         tareaViewModel = new ViewModelProvider(this).get(TareaViewModel.class);
 
@@ -58,29 +60,19 @@ public class CrearTareaActivity extends AppCompatActivity {
         editTextFecha.setFocusable(false);
         editTextFecha.setOnClickListener(v -> mostrarSelectorFechaHora());
 
-        if (getIntent().hasExtra(EXTRA_ID)) {
-            setTitle("Editar Tarea");
-            tareaId = getIntent().getIntExtra(EXTRA_ID, -1);
+        usuarioId = (UUID) getIntent().getSerializableExtra("id");
+        username = getIntent().getStringExtra("username");
+        password = getIntent().getStringExtra("password");
 
-            tareaViewModel.getTareaById(tareaId).observe(this, tarea -> {
-                if (tarea != null) {
-                    editTextTitulo.setText(tarea.getTitulo());
-                    editTextDescripcion.setText(tarea.getDescripcion());
+        if (usuarioId == null || username == null || password == null) {
+            Toast.makeText(this, "Error: usuario no identificado", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
 
-                    int prioridadPosition = ((ArrayAdapter)spinnerPrioridad.getAdapter()).getPosition(tarea.getPrioridad());
-                    spinnerPrioridad.setSelection(prioridadPosition);
-
-                    int categoriaPosition = ((ArrayAdapter)spinnerCategoria.getAdapter()).getPosition(tarea.getCategoria());
-                    spinnerCategoria.setSelection(categoriaPosition);
-
-                    if (tarea.getFecha() != null) {
-                        editTextFecha.setText(new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
-                                .format(tarea.getFecha()));
-                    }
-                }
-            });
-        } else {
-            setTitle("Nueva Tarea");
+        UUID tareaId = (UUID) getIntent().getSerializableExtra(EXTRA_ID);
+        if (tareaId != null) {
+            cargarTareaRemota(tareaId);
         }
     }
 
@@ -95,10 +87,10 @@ public class CrearTareaActivity extends AppCompatActivity {
         categoriaAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerCategoria.setAdapter(categoriaAdapter);
     }
+
     private void mostrarSelectorFechaHora() {
         final Calendar calendario = Calendar.getInstance();
 
-        // Selector de fecha
         DatePickerDialog datePicker = new DatePickerDialog(this,
                 (view, year, month, day) -> {
                     calendario.set(year, month, day);
@@ -129,6 +121,29 @@ public class CrearTareaActivity extends AppCompatActivity {
         timePicker.show();
     }
 
+    private void cargarTareaRemota(UUID tareaId) {
+        tareaViewModel.getTareaPorId(usuarioId, tareaId, username, password).observe(this, tarea -> {
+            if (tarea != null) {
+                tareaEditando = tarea;
+                rellenarCampos(tarea);
+            } else {
+                Toast.makeText(this, "Error cargando la tarea", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        });
+    }
+
+    private void rellenarCampos(Tarea tarea) {
+        editTextTitulo.setText(tarea.getTitulo());
+        editTextDescripcion.setText(tarea.getDescripcion());
+        fechaSeleccionada = tarea.getFecha().getTime();
+        editTextFecha.setText(new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
+                .format(tarea.getFecha()));
+
+        spinnerPrioridad.setSelection(((ArrayAdapter<String>) spinnerPrioridad.getAdapter()).getPosition(tarea.getPrioridad()));
+        spinnerCategoria.setSelection(((ArrayAdapter<String>) spinnerCategoria.getAdapter()).getPosition(tarea.getCategoria()));
+    }
+
     public void guardarTarea(View view) {
         String titulo = editTextTitulo.getText().toString().trim();
         String descripcion = editTextDescripcion.getText().toString().trim();
@@ -141,43 +156,59 @@ public class CrearTareaActivity extends AppCompatActivity {
             return;
         }
 
-        if(TextUtils.isEmpty(descripcion)){
+        if (TextUtils.isEmpty(descripcion)) {
             editTextDescripcion.setError("La descripción es obligatoria");
             editTextDescripcion.requestFocus();
             return;
         }
 
-        if (fechaSeleccionada == null){
+        if (fechaSeleccionada == null) {
             editTextFecha.setError("La fecha es obligatoria");
             editTextFecha.requestFocus();
             return;
         }
 
-        Date fechaFinal = new Date(fechaSeleccionada); // ← convierte el Long en Date
-        Tarea tarea = new Tarea(titulo, descripcion, categoria, prioridad, fechaFinal);
-        NotificacionHelper.crearCanal(this);
-        AlarmaManager.programarAlarma(this, tarea);
+        Date fechaFinal = new Date(fechaSeleccionada);
 
-        if (tareaId != -1) {
-            tarea.setId(tareaId);
-            tareaViewModel.update(tarea);
-            Toast.makeText(this, "Tarea actualizada", Toast.LENGTH_SHORT).show();
+        if (tareaEditando == null) {
+            Tarea nuevaTarea = new Tarea();
+            nuevaTarea.setTitulo(titulo);
+            nuevaTarea.setDescripcion(descripcion);
+            nuevaTarea.setCategoria(categoria);
+            nuevaTarea.setPrioridad(prioridad);
+            nuevaTarea.setFecha(fechaFinal);
+            nuevaTarea.setCompletada(false);
+            nuevaTarea.setUsuarioId(usuarioId);
+
+            tareaViewModel.crearTarea(usuarioId, nuevaTarea, username, password).observe(this, tareaCreada -> {
+                if (tareaCreada != null) {
+                    AlarmaManager.programarAlarma(this, tareaCreada);
+                    Toast.makeText(this, "Tarea creada correctamente", Toast.LENGTH_LONG).show();
+                    setResult(RESULT_OK);
+                    finish();
+                } else {
+                    Toast.makeText(this, "Error creando la tarea", Toast.LENGTH_LONG).show();
+                }
+            });
+
         } else {
-            tareaViewModel.insert(tarea);
+            AlarmaManager.cancelarAlarma(this, tareaEditando);
+            tareaEditando.setTitulo(titulo);
+            tareaEditando.setDescripcion(descripcion);
+            tareaEditando.setCategoria(categoria);
+            tareaEditando.setPrioridad(prioridad);
+            tareaEditando.setFecha(fechaFinal);
 
-            if (tarea.isCompletada()) {
-                Toast.makeText(this, "¡Tarea completada!", Toast.LENGTH_SHORT).show();
-            }
-            //Toast.makeText(this, "Tarea creada", Toast.LENGTH_SHORT).show();
-
-            // Mostrar fecha de creación con Toast
-            Date fechaCreacion = new Date();
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
-            String fechaFormateada = sdf.format(fechaCreacion);
-
-            Toast.makeText(this, "Tarea creada el " + fechaFormateada, Toast.LENGTH_LONG).show();
+            tareaViewModel.actualizarTarea(usuarioId, tareaEditando.getId(), tareaEditando, username, password).observe(this, tareaActualizada -> {
+                if (tareaActualizada != null) {
+                    AlarmaManager.programarAlarma(this, tareaActualizada);
+                    Toast.makeText(this, "Tarea actualizada correctamente", Toast.LENGTH_LONG).show();
+                    setResult(RESULT_OK);
+                    finish();
+                } else {
+                    Toast.makeText(this, "Error actualizando la tarea", Toast.LENGTH_LONG).show();
+                }
+            });
         }
-
-        finish();
     }
 }

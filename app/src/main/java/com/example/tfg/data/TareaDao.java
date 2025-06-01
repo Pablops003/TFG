@@ -33,4 +33,7 @@ public interface TareaDao {
 
     @Query("SELECT * FROM tareas ORDER BY CASE prioridad WHEN 'Alta' THEN 1 WHEN 'Media' THEN 2 ELSE 3 END")
     LiveData<List<Tarea>> getAllTareas();
+
+    @Query("SELECT * FROM tareas WHERE usuarioId = :usuarioId")
+    LiveData<List<Tarea>> getTareasPorUsuarioId(int usuarioId);
 }

@@ -21,12 +21,16 @@ import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class StatsActivity extends AppCompatActivity {
 
     private TareaViewModel tareaViewModel;
     private PieChart pieChart;
     private BarChart barChart;
+    private UUID usuarioId;
+    private String username;
+    private String password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +41,15 @@ public class StatsActivity extends AppCompatActivity {
         barChart = findViewById(R.id.barChart);
         Button btnBack = findViewById(R.id.btn_back);
 
+        usuarioId = (UUID) getIntent().getSerializableExtra("id");
+        username = getIntent().getStringExtra("username");
+        password = getIntent().getStringExtra("password");
+
+        if (usuarioId == null || username == null || password == null) {
+            finish();
+            return;
+        }
+
         tareaViewModel = new ViewModelProvider(this).get(TareaViewModel.class);
 
         configgraficos();
@@ -46,7 +59,6 @@ public class StatsActivity extends AppCompatActivity {
     }
 
     private void configgraficos() {
-        // gráfico de pastel
         pieChart.setUsePercentValues(true);
         pieChart.getDescription().setEnabled(false);
         pieChart.setExtraOffsets(5, 10, 5, 5);
@@ -55,7 +67,6 @@ public class StatsActivity extends AppCompatActivity {
         pieChart.setHoleColor(android.R.color.transparent);
         pieChart.setTransparentCircleRadius(61f);
 
-        //  gráfico de barras
         barChart.getDescription().setEnabled(false);
         barChart.setDrawValueAboveBar(true);
         barChart.setMaxVisibleValueCount(60);
@@ -64,7 +75,7 @@ public class StatsActivity extends AppCompatActivity {
     }
 
     private void datos() {
-        tareaViewModel.getAllTareas().observe(this, tareas -> {
+        tareaViewModel.getTareasUsuario(usuarioId, username, password).observe(this, tareas -> {
             if (tareas != null && !tareas.isEmpty()) {
                 int completadas = 0;
                 int pendientes = 0;
@@ -79,9 +90,15 @@ public class StatsActivity extends AppCompatActivity {
                     }
 
                     switch (tarea.getPrioridad()) {
-                        case "Alta": alta++; break;
-                        case "Media": media++; break;
-                        case "Baja": baja++; break;
+                        case "Alta":
+                            alta++;
+                            break;
+                        case "Media":
+                            media++;
+                            break;
+                        case "Baja":
+                            baja++;
+                            break;
                     }
                 }
 
@@ -95,7 +112,6 @@ public class StatsActivity extends AppCompatActivity {
         ArrayList<PieEntry> entries = new ArrayList<>();
         entries.add(new PieEntry(completadas, "Completadas"));
         entries.add(new PieEntry(pendientes, "Pendientes"));
-
         PieDataSet dataSet = new PieDataSet(entries, "Estado de Tareas");
         dataSet.setColors(ColorTemplate.MATERIAL_COLORS);
         dataSet.setValueTextSize(12f);
@@ -104,7 +120,7 @@ public class StatsActivity extends AppCompatActivity {
         data.setValueFormatter(new PercentFormatter(pieChart));
 
         pieChart.setData(data);
-        pieChart.invalidate(); // Refrescar
+        pieChart.invalidate();
     }
 
     private void setupBarChartData(int alta, int media, int baja) {
@@ -125,6 +141,6 @@ public class StatsActivity extends AppCompatActivity {
         data.setBarWidth(0.5f);
 
         barChart.setData(data);
-        barChart.invalidate(); // Refrescar otra vez
+        barChart.invalidate();
     }
 }

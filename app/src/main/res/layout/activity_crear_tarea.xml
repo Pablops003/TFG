@@ -18,7 +18,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:text="@string/nueva_tarea"
             android:textAppearance="@style/TextAppearance.AppCompat.Headline"
             android:textColor="@color/colorPrimary"
             android:textStyle="bold" />
@@ -72,7 +71,7 @@
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_marginBottom="24dp"
-            android:background="@drawable/bg_spinner" />
+           />
 
         <TextView
             android:layout_width="wrap_content"
@@ -86,7 +85,6 @@
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_marginBottom="16dp"
-            android:background="@drawable/bg_spinner"
             android:spinnerMode="dropdown" />
 
         <TextView
