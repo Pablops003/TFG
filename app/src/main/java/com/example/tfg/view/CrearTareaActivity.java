@@ -22,6 +22,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 import java.util.UUID;
 
 public class CrearTareaActivity extends AppCompatActivity {
@@ -89,7 +90,7 @@ public class CrearTareaActivity extends AppCompatActivity {
     }
 
     private void mostrarSelectorFechaHora() {
-        final Calendar calendario = Calendar.getInstance();
+        final Calendar calendario = Calendar.getInstance(TimeZone.getTimeZone("Europe/Madrid"));
 
         DatePickerDialog datePicker = new DatePickerDialog(this,
                 (view, year, month, day) -> {
@@ -111,8 +112,11 @@ public class CrearTareaActivity extends AppCompatActivity {
                     calendario.set(Calendar.MINUTE, minute);
 
                     fechaSeleccionada = calendario.getTimeInMillis();
-                    editTextFecha.setText(new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
-                            .format(calendario.getTime()));
+
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
+                    sdf.setTimeZone(    TimeZone.getTimeZone("Europe/Madrid"));
+
+                    editTextFecha.setText(sdf.format(calendario.getTime()));
                 },
                 calendario.get(Calendar.HOUR_OF_DAY),
                 calendario.get(Calendar.MINUTE),
@@ -120,6 +124,7 @@ public class CrearTareaActivity extends AppCompatActivity {
         );
         timePicker.show();
     }
+
 
     private void cargarTareaRemota(UUID tareaId) {
         tareaViewModel.getTareaPorId(usuarioId, tareaId, username, password).observe(this, tarea -> {

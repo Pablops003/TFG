@@ -4,21 +4,21 @@
     android:id="@+id/cardView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    app:cardCornerRadius="12dp"
-    app:cardElevation="4dp"
+    android:layout_margin="6dp"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="3dp"
     app:cardUseCompatPadding="true">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp">
+        android:padding="12dp">
 
         <TextView
             android:id="@+id/textViewTitulo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textColor="@color/text_primary"
             android:textStyle="bold" />
 
@@ -27,8 +27,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/textViewTitulo"
-            android:layout_marginTop="4dp"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:layout_marginTop="2dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
             android:textColor="@color/text_secondary" />
 
         <TextView
@@ -36,48 +36,50 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/textViewDescripcion"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="6dp"
             android:background="@drawable/rounded_bg_priorit"
-            android:paddingHorizontal="8dp"
-            android:paddingVertical="4dp"
-            android:textColor="@android:color/white" />
+            android:paddingHorizontal="6dp"
+            android:paddingVertical="3dp"
+            android:textColor="@android:color/white"
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/textViewFechaFin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/textViewPrioridad"
-            android:layout_marginTop="4dp"
-            android:text="Fecha Fin"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textColor="@color/text_secondary" />
+            android:layout_marginTop="2dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textColor="@color/text_secondary"
+            android:textSize="12sp" />
 
-        <!-- Botones colocados correctamente -->
         <LinearLayout
             android:id="@+id/buttonContainer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/textViewFechaFin"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="8dp"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="6dp"
             android:orientation="horizontal">
 
             <ImageButton
                 android:id="@+id/btnDelete"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
                 android:src="@drawable/ic_delete"
                 android:contentDescription="Eliminar tarea"
                 android:background="?android:attr/selectableItemBackgroundBorderless"
-                android:layout_marginEnd="8dp" />
+                android:layout_marginEnd="6dp"
+                android:padding="6dp" />
 
             <ImageButton
                 android:id="@+id/btnCompletar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
                 android:src="@drawable/ic_check"
                 android:contentDescription="Completar tarea"
-                android:background="?android:attr/selectableItemBackgroundBorderless" />
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:padding="6dp" />
         </LinearLayout>
 
     </RelativeLayout>

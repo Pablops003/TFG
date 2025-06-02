@@ -15,7 +15,8 @@ public class RetrofitCliente {
     public static String username = "nologin";
     public static String password = "nopassword";
     private static Retrofit retrofit;
-    private static final String BASE_URL = "https://demo-8lbj.onrender.com/api/";
+   // private static final String BASE_URL = "https://demo-8lbj.onrender.com/api/";
+    private static final String BASE_URL = "http://192.168.1.38:8080/api/";
 
     public static Retrofit getRetrofitInstance() {
         Gson gson = new GsonBuilder()

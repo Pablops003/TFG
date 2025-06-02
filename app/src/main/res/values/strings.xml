@@ -1,7 +1,5 @@
 <resources>
     <string name="app_name">PaTareas</string>
-    <string name="nueva_tarea">Nueva Tarea</string>
-    <string name="editar_tarea">Editar Tarea</string>
     <string name="titulo_tarea">Título</string>
     <string name="descripcion">Descripción</string>
     <string name="categoria">Categoría</string>

@@ -42,7 +42,10 @@ public class Login extends AppCompatActivity {
 
             usuarioViewModel.loginUsuario(username, password).observe(this, usuarioDTO -> {
                 if (usuarioDTO != null) {
-                    new SesionManager(this).saveLogin(username, password);
+                    //new SesionManager(this).saveLogin(username, password);
+                    SesionManager sesionManager = new SesionManager(this);
+                    sesionManager.saveLogin(username, password);
+                    //sesionManager.saveUserId(usuarioDTO.getId().toString());
 
                     RetrofitCliente.username = username;
                     RetrofitCliente.password = password;

@@ -25,7 +25,6 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_margin="16dp"
-        android:contentDescription="@string/nueva_tarea"
         android:src="@drawable/ic_add"
         app:backgroundTint="@color/colorPrimary"
         app:elevation="8dp"
