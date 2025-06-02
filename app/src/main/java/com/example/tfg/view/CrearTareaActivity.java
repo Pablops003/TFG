@@ -2,6 +2,7 @@ package com.example.tfg.view;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -187,14 +188,17 @@ public class CrearTareaActivity extends AppCompatActivity {
 
             tareaViewModel.crearTarea(usuarioId, nuevaTarea, username, password).observe(this, tareaCreada -> {
                 if (tareaCreada != null) {
-                    AlarmaManager.programarAlarma(this, tareaCreada);
                     Toast.makeText(this, "Tarea creada correctamente", Toast.LENGTH_LONG).show();
-                    setResult(RESULT_OK);
+
+                    Intent resultIntent = new Intent();
+                    resultIntent.putExtra("tarea", tareaCreada);  // Devuelve tarea creada
+                    setResult(RESULT_OK, resultIntent);
                     finish();
                 } else {
                     Toast.makeText(this, "Error creando la tarea", Toast.LENGTH_LONG).show();
                 }
             });
+
 
         } else {
             AlarmaManager.cancelarAlarma(this, tareaEditando);
@@ -206,14 +210,17 @@ public class CrearTareaActivity extends AppCompatActivity {
 
             tareaViewModel.actualizarTarea(usuarioId, tareaEditando.getId(), tareaEditando, username, password).observe(this, tareaActualizada -> {
                 if (tareaActualizada != null) {
-                    AlarmaManager.programarAlarma(this, tareaActualizada);
                     Toast.makeText(this, "Tarea actualizada correctamente", Toast.LENGTH_LONG).show();
-                    setResult(RESULT_OK);
+
+                    Intent resultIntent = new Intent();
+                    resultIntent.putExtra("tarea", tareaActualizada);  // Devuelve tarea actualizada
+                    setResult(RESULT_OK, resultIntent);
                     finish();
                 } else {
                     Toast.makeText(this, "Error actualizando la tarea", Toast.LENGTH_LONG).show();
                 }
             });
+
         }
     }
 }

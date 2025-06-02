@@ -16,6 +16,7 @@ import com.example.tfg.R;
 import com.example.tfg.adapter.TareaAdapter;
 import com.example.tfg.model.Tarea;
 import com.example.tfg.util.AlarmaManager;
+import com.example.tfg.util.NotificacionHelper;
 import com.example.tfg.viewModel.TareaViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -35,8 +36,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        NotificacionHelper.crearCanal(this);
-//        NotificacionHelper.mostrar(this, "Notificación de prueba", "Si ves esto, las notificaciones funcionan");
+        NotificacionHelper.crearCanal(this);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
@@ -144,16 +144,7 @@ public class MainActivity extends AppCompatActivity {
     private void recargarTareas() {
         tareaViewModel.getTareasPendientes(usuarioId, username, password).observe(this, adapter::setTareas);
     }
-//    private void recargarTareas() {
-//        tareaViewModel.getTareasPendientes(usuarioId, username, password).observe(this, tareas -> {
-//            adapter.setTareas(tareas);
-//            if (tareas != null) {
-//                for (Tarea tarea : tareas) {
-//                    AlarmaManager.programarAlarma(this, tarea);
-//                }
-//            }
-//        });
-//    }
+
 
 
     @Override
