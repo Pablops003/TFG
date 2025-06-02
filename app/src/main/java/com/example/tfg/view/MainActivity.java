@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("id", usuarioId);
                 intent.putExtra("username", username);
                 intent.putExtra("password", password);
-                startActivity(intent);
+                startActivityForResult(intent, 1);
             }
 
             @Override
