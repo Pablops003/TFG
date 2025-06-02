@@ -9,6 +9,7 @@ import com.example.tfg.model.Tarea;
 import com.example.tfg.receiver.AlarmReceiver;
 
 import java.util.Calendar;
+import java.util.TimeZone;
 
 public class AlarmaManager {
 
@@ -16,7 +17,7 @@ public class AlarmaManager {
         if (tarea == null || tarea.getFecha() == null || tarea.getId() == null) return;
 
         // Restar 1 hora a la fecha de fin
-        Calendar calendar = Calendar.getInstance();
+        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("Europe/Madrid"));
         calendar.setTime(tarea.getFecha());
         calendar.add(Calendar.HOUR_OF_DAY, -1); // Una hora antes
 
